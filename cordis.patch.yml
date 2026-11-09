@@ -1,0 +1,8 @@
+# dsh-deepseek-exa-hybrid-search — profile bundle patch.
+#
+# `dsh plugin --profile web add dsh-deepseek-exa-hybrid-search` installs this
+# package and reconciles it into the profile's bundle stack. The loader imports
+# `name` as a module specifier from the profile directory.
+- insert:
+    - id: dsh-deepseek-exa-hybrid-search
+      name: "dsh-deepseek-exa-hybrid-search"

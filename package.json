@@ -1,0 +1,49 @@
+{
+  "name": "dsh-deepseek-exa-hybrid-search",
+  "version": "1.0.0",
+  "description": "DSH web_search provider that queries DeepSeek Search API and Exa in parallel and returns one merged, de-duplicated, cross-source-first result list.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek",
+    "deepseek-harness",
+    "exa",
+    "web-search",
+    "hybrid-search",
+    "search"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/schemastery": ">=3.18.0 <4"
+  },
+  "license": "MIT",
+  "author": "zztdandan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zztdandan/dsh-deepseek-exa-hybrid-search.git"
+  },
+  "homepage": "https://github.com/zztdandan/dsh-deepseek-exa-hybrid-search#readme",
+  "bugs": {
+    "url": "https://github.com/zztdandan/dsh-deepseek-exa-hybrid-search/issues"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}
