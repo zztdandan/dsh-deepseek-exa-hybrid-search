@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.1 — 2026-11-16
+
+- Reorder fetch fallback to Exa-first: Exa Contents API (`POST /contents`) →
+  DeepSeek Fetch API (`POST /v1/tools/fetch`) → direct public HTTP, each tried
+  only when the previous leg fails (or has no key). The DeepSeek independent
+  Search/Fetch endpoints are already the full-suite (全家桶) API, so no endpoint
+  change was needed.
+- Fix the capability switches: saving `enableSearch` / `enableFetch` now also
+  syncs the `web` namespace (`searchProvider` / `fetchProvider`) so enabling
+  pins the hybrid provider and disabling restores the built-in provider
+  (`deepseek-search-api` / `http`) instead of leaving a dangling `hybrid2` id
+  with no registered provider.
+
 ## 1.1.0 — 2026-11-16
 
 - Add fetch capability: registers `hybrid2-fetch` and takes over the DeepSeek

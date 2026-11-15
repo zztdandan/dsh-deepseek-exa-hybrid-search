@@ -1,13 +1,13 @@
 # dsh-deepseek-exa-hybrid-search
 
-A DeepSeek Harness (`dsh`) web provider that queries **DeepSeek Search API** and **Exa** at the same time and gives the agent **one merged, de-duplicated result list**, and that fetches pages through the **DeepSeek Fetch API** with a **graceful local-HTTP fallback (优雅退让)**.
+A DeepSeek Harness (`dsh`) web provider that queries **DeepSeek Search API** and **Exa** at the same time and gives the agent **one merged, de-duplicated result list**, and that fetches pages through **Exa Contents → DeepSeek Fetch API → local HTTP** with graceful degradation (优雅退让).
 
-一个把 **DeepSeek** 与 **Exa** 的搜索结果并发查询、去重合并成单份结果的 DSH 插件，并让网页获取走 **DeepSeek Fetch API**、失败时优雅退让到本地直连。它替换内建 `web_search` / `web_fetch` 的后端，不新增工具。
+一个把 **DeepSeek** 与 **Exa** 的搜索结果并发查询、去重合并成单份结果的 DSH 插件，并让网页获取依次走 **Exa Contents → DeepSeek Fetch API → 本地直连**、逐级优雅退让。它替换内建 `web_search` / `web_fetch` 的后端，不新增工具。
 
 - One `web_search` call → both engines in parallel.
 - Cross-source hits first, then reciprocal-rank (RRF) ordering.
 - One engine down/slow → the other leg still answers (no failed search).
-- One `web_fetch` call → DeepSeek Fetch API, then direct HTTP on failure.
+- One `web_fetch` call → Exa Contents, then DeepSeek Fetch API, then direct HTTP.
 - Independent `enableSearch` / `enableFetch` switches.
 - A settings page (Settings → Hybrid Search) edits keys and switches.
 - No extra tools; the only footprint is the web provider and the settings page.
@@ -72,12 +72,18 @@ only one key the search degrades to that leg.
 
 ### Fetch
 
-- DeepSeek Fetch API: `POST https://api.deepseek.com/v1/tools/fetch`, returns
-  page Markdown in one call.
-- On any DeepSeek Fetch API failure (network, HTTP error, empty body), the fetch
-  **degrades to a direct public HTTP GET** (优雅退让). It throws only when both
-  legs fail.
-- Bodies are capped at 100 000 characters.
+Fetch degrades through three legs in order (优雅退让), each tried only when the
+previous one fails or has no key:
+
+1. Exa Contents API: `POST https://api.exa.ai/contents`, full page text as clean
+   markdown.
+2. DeepSeek Fetch API: `POST https://api.deepseek.com/v1/tools/fetch`, page
+   Markdown in one call.
+3. Direct public HTTP GET: the last resort.
+
+It throws only when all available legs fail. Bodies are capped at 100 000
+characters. The DeepSeek Search/Fetch independent endpoints are already the
+full-suite (全家桶) API, so no endpoint change is needed.
 
 ## Settings page
 
@@ -85,6 +91,17 @@ The plugin ships a settings page (Settings → Hybrid Search) that mirrors
 `dsh-opencode-go-quota-settings`: it edits the two keys and the two switches
 through the official `remote.settings` service, writing the profile patch
 (明文) and hot-applying to the next request.
+
+The two capability switches do more than flip `enableSearch` / `enableFetch`:
+saving also syncs the `web` namespace so the choice actually takes effect —
+
+- **Enable search** → `web.searchProvider = hybrid2`; **disable** → restores
+  `deepseek-search-api`.
+- **Enable fetch** → `web.fetchProvider = hybrid2-fetch`; **disable** → restores
+  `http`.
+
+This is what makes the switches restore the built-in provider on uncheck (rather
+than leaving a dangling `hybrid2` id with no registered provider).
 
 ## Compatibility
 

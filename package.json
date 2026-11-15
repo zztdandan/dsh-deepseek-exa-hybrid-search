@@ -1,7 +1,7 @@
 {
   "name": "dsh-deepseek-exa-hybrid-search",
-  "version": "1.1.0",
-  "description": "DSH web provider: DeepSeek + Exa hybrid search with merged results, plus DeepSeek Fetch API with graceful local-HTTP fallback; settings page with per-capability switches and plain-text keys in the profile patch.",
+  "version": "1.1.1",
+  "description": "DSH web provider: DeepSeek + Exa hybrid search with merged results, plus Exa Contents → DeepSeek Fetch API → local HTTP fetch with graceful fallback; settings page with per-capability switches and plain-text keys in the profile patch.",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
