@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.1.0 — 2026-11-16
+
+- Add fetch capability: registers `hybrid2-fetch` and takes over the DeepSeek
+  fetch slot (`deepseek-fetch-api` / `hybrid2-fetch` / unset).
+- Fetch uses the DeepSeek Fetch API (`POST /v1/tools/fetch`); on any failure it
+  gracefully degrades to a direct public HTTP fetch (优雅退让), throwing only when
+  both legs fail.
+- Add `enableSearch` / `enableFetch` config switches so the two capabilities can
+  be enabled or disabled independently.
+- Add a settings page (Settings → Hybrid Search) mirroring
+  `dsh-opencode-go-quota-settings`: edits the keys (plain text in the profile
+  patch) and both capability switches through the official `remote.settings`
+  service; changes hot-apply to the next request.
+- Keys remain plain text in the profile patch by design.
+
 ## 1.0.0 — 2026-11-09
 
 First public release.

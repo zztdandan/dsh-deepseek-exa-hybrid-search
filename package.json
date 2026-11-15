@@ -1,11 +1,12 @@
 {
   "name": "dsh-deepseek-exa-hybrid-search",
-  "version": "1.0.0",
-  "description": "DSH web_search provider that queries DeepSeek Search API and Exa in parallel and returns one merged, de-duplicated, cross-source-first result list.",
+  "version": "1.1.0",
+  "description": "DSH web provider: DeepSeek + Exa hybrid search with merged results, plus DeepSeek Fetch API with graceful local-HTTP fallback; settings page with per-capability switches and plain-text keys in the profile patch.",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
     ".": "./lib/index.js",
+    "./client": "./lib/client.js",
     "./package.json": "./package.json"
   },
   "files": [
@@ -23,7 +24,10 @@
     "exa",
     "web-search",
     "hybrid-search",
-    "search"
+    "search",
+    "fetch",
+    "web-fetch",
+    "settings"
   ],
   "engines": {
     "node": ">=20"
@@ -44,6 +48,9 @@
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
     }
   }
 }
