@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Hybrid Search",
+    "description": "DeepSeek Search API + Exa queried in parallel and merged into one de-duplicated, cross-source-first result list; page fetch degrades Exa Contents → DeepSeek Fetch API → direct HTTP, with a settings page for the keys and the two capability switches."
+  }
+}

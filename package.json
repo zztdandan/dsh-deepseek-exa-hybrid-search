@@ -1,24 +1,30 @@
 {
   "name": "dsh-deepseek-exa-hybrid-search",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "DSH web provider: DeepSeek + Exa hybrid search with merged results, plus Exa Contents → DeepSeek Fetch API → local HTTP fetch with graceful fallback; settings page with per-capability switches and plain-text keys in the profile patch.",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
+    "./locale/*": "./locale/*",
+    "./icon": "./icon.svg",
     "./package.json": "./package.json"
   },
   "files": [
     "lib",
+    "locale",
+    "icon.svg",
     "cordis.patch.yml",
     "README.md",
-    "LICENSE",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "LICENSE"
   ],
+  "icon": "./icon.svg",
   "keywords": [
     "dsh",
     "dsh-plugin",
+    "dsh-bundle",
     "deepseek",
     "deepseek-harness",
     "exa",
@@ -30,10 +36,24 @@
     "settings"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=20",
+    "dsh": ">=0.2.1-rc.4 <0.3.0-0"
   },
   "peerDependencies": {
     "@deepseek-ai/schemastery": ">=3.18.0 <4"
+  },
+  "devDependencies": {
+    "@deepseek-ai/schemastery": "^3.19.0"
+  },
+  "scripts": {
+    "test": "node --test test/unit.test.mjs",
+    "test:live": "node test/run.mjs && node test/live-takeover.mjs",
+    "check": "node scripts/check-package.mjs",
+    "prepublishOnly": "npm run check && npm test"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "license": "MIT",
   "author": "zztdandan",

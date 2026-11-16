@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "混合搜索",
+    "description": "把 DeepSeek Search API 与 Exa 的搜索结果并发查询、去重合并成单份列表；网页获取依次走 Exa Contents → DeepSeek Fetch API → 本地直连。设置页里改两把密钥和两个能力开关。"
+  }
+}
