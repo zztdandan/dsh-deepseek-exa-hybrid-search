@@ -1,25 +1,20 @@
 name: Release
 
-# One tag push publishes everywhere it can:
-#   * npm (with provenance) — the install channel every DSH storefront points at
-#   * GitHub Release with the same prebuilt .tgz attached — the fallback channel
-#     for stores and users that cannot install from source
-# Nothing else is needed: the curated market index (awesome-dsh-plugin) is
-# refreshed from npm and this repository by its own CI.
+# Git is the distribution channel: a tag produces a GitHub Release with the
+# prebuilt tarball attached. Nothing is published to npm.
+#
+#   git tag v1.1.3 && git push --follow-tags
+#
+# Storefronts (awesome-dsh-plugin and everything built on it) install from this
+# repository, so a new tag is all they need.
 
 on:
   push:
     tags: ["v*"]
   workflow_dispatch:
-    inputs:
-      dry_run:
-        description: "Only run npm publish --dry-run (no npm write, no GitHub Release)"
-        type: boolean
-        default: true
 
 permissions:
   contents: write
-  id-token: write
 
 concurrency:
   group: release-${{ github.ref }}
@@ -36,7 +31,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          registry-url: https://registry.npmjs.org
           cache: npm
 
       - run: npm ci
@@ -60,23 +54,6 @@ jobs:
           # A version-free copy keeps releases/latest/download/<name>.tgz stable
           cp "dist/$name-$version.tgz" "dist/$name.tgz"
           ls -l dist
-
-      - name: Publish to npm (skipped when the version already exists)
-        if: github.event_name == 'push' || inputs.dry_run == false
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          name=$(node -p "require('./package.json').name")
-          version=$(node -p "require('./package.json').version")
-          if npm view "$name@$version" version --registry=https://registry.npmjs.org >/dev/null 2>&1; then
-            echo "$name@$version is already on npm; nothing to publish"
-          else
-            npm publish --provenance --access public
-          fi
-
-      - name: Dry-run publish
-        if: github.event_name == 'workflow_dispatch' && inputs.dry_run
-        run: npm publish --dry-run --access public
 
       - name: GitHub Release with the prebuilt tarball
         if: github.event_name == 'push'

@@ -1,6 +1,6 @@
 {
   "name": "dsh-deepseek-exa-hybrid-search",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "DSH web provider: DeepSeek + Exa hybrid search with merged results, plus Exa Contents → DeepSeek Fetch API → local HTTP fetch with graceful fallback; settings page with per-capability switches and plain-text keys in the profile patch.",
   "type": "module",
   "main": "lib/index.js",
@@ -48,12 +48,7 @@
   "scripts": {
     "test": "node --test test/unit.test.mjs",
     "test:live": "node test/run.mjs && node test/live-takeover.mjs",
-    "check": "node scripts/check-package.mjs",
-    "prepublishOnly": "npm run check && npm test"
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org"
+    "check": "node scripts/check-package.mjs"
   },
   "license": "MIT",
   "author": "zztdandan",

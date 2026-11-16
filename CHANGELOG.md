@@ -1,10 +1,17 @@
 # Changelog
 
+## 1.1.3 — 2026-11-16
+
+- Distribution is git-only: install and update from a tag
+  (`dsh plugin add "github:zztdandan/dsh-deepseek-exa-hybrid-search#v1.1.3"`) or
+  from the prebuilt tarball on the matching GitHub Release. The README, badges
+  and the Release workflow no longer reference a registry, and the profile keeps
+  the same package name, bundle patch and plugin config across an update.
+
 ## 1.1.2 — 2026-11-16
 
-- Publish to npm: `dsh plugin --profile web add dsh-deepseek-exa-hybrid-search`
-  now installs the prebuilt package (`publishConfig.access: public`,
-  zero runtime dependencies).
+- Ship a prebuilt, dependency-free tarball: `npm pack` carries `lib/`, `locale/`,
+  the bundle patch and the icon, so an install needs no build step.
 - Declare `engines.dsh` (`>=0.2.1-rc.4 <0.3.0-0`) so DSH and the plugin market
   can check compatibility without guessing from peers.
 - Add storefront metadata: `icon.svg`, `locale/en.json`, `locale/zh.json`
@@ -13,8 +20,8 @@
   fallback, per-capability switches and search/fetch slot takeover.
 - Add `npm run check`, a dependency-free guard for the `dsh.bundle` patch,
   locales, icon, exports and engine range.
-- Add CI (Node 20/22/24) and a tag-driven Release workflow that publishes to npm
-  with provenance and attaches a prebuilt tarball to the GitHub Release.
+- Add CI (Node 20/22/24) and a tag-driven Release workflow that attaches the
+  prebuilt tarball to the GitHub Release.
 
 ## 1.1.1 — 2026-11-16
 

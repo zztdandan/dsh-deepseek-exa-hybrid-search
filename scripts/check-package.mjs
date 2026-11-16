@@ -41,7 +41,6 @@ for (const field of ["description", "license", "author"]) {
   if (typeof pkg[field] !== "string" || pkg[field].trim() === "") fail(`package.json: ${field} is required`);
 }
 if (pkg.repository?.url === undefined) fail("package.json: repository.url is required");
-if (pkg.publishConfig?.access !== "public") fail("package.json: publishConfig.access must be public");
 if (!Array.isArray(pkg.keywords) || !pkg.keywords.includes("dsh-plugin")) notes.push("keywords: expected the dsh-plugin keyword");
 
 // ── DSH bundle contract ───────────────────────────────────────────────────
