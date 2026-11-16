@@ -2,11 +2,13 @@
 
 ## 1.1.3 — 2026-11-16
 
-- Distribution is git-only: install and update from a tag
-  (`dsh plugin add "github:zztdandan/dsh-deepseek-exa-hybrid-search#v1.1.3"`) or
-  from the prebuilt tarball on the matching GitHub Release. The README, badges
-  and the Release workflow no longer reference a registry, and the profile keeps
-  the same package name, bundle patch and plugin config across an update.
+- Publish to npm: `dsh plugin --profile web add dsh-deepseek-exa-hybrid-search`
+  now installs the prebuilt package, and the `v*` Release workflow publishes it
+  with a provenance statement attestation built on GitHub Actions.
+- The same tag still attaches the versioned `.tgz` and a stable `<name>.tgz` to
+  the GitHub Release, so git and tarball installs keep working without npm.
+- `npm run check` now also requires `publishConfig.access: public`, and the
+  Release workflow can backfill a version through `workflow_dispatch`.
 
 ## 1.1.2 — 2026-11-16
 

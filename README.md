@@ -1,6 +1,6 @@
 # dsh-deepseek-exa-hybrid-search
 
-[![release](https://img.shields.io/github/v/release/zztdandan/dsh-deepseek-exa-hybrid-search)](https://github.com/zztdandan/dsh-deepseek-exa-hybrid-search/releases)
+[![npm](https://img.shields.io/npm/v/dsh-deepseek-exa-hybrid-search)](https://www.npmjs.com/package/dsh-deepseek-exa-hybrid-search)
 [![CI](https://github.com/zztdandan/dsh-deepseek-exa-hybrid-search/actions/workflows/ci.yml/badge.svg)](https://github.com/zztdandan/dsh-deepseek-exa-hybrid-search/actions/workflows/ci.yml)
 [![license](https://img.shields.io/github/license/zztdandan/dsh-deepseek-exa-hybrid-search)](LICENSE)
 
@@ -25,40 +25,39 @@ provider that calls both HTTP APIs directly.
 
 ## Install
 
-The plugin is distributed from this repository — install and update from a tag
-(pinned, reproducible), or from the moving default branch:
-
 ```bash
-# latest release tag (recommended)
-dsh plugin --profile web add "github:zztdandan/dsh-deepseek-exa-hybrid-search#v1.1.3"
-
-# or the moving HEAD of main
-dsh plugin --profile web add github:zztdandan/dsh-deepseek-exa-hybrid-search
+dsh plugin --profile web add dsh-deepseek-exa-hybrid-search
 ```
 
-The prebuilt tarball attached to the same tag works without cloning or a build
-step — it is still served by this repository:
+Pinning a version is `dsh-deepseek-exa-hybrid-search@1.1.3`. The package is
+prebuilt — `lib/`, `locale/`, the bundle patch and the icon — so installing
+needs no build step and no `allowBuilds` approval.
+
+Without npm access, the same release is installable from git or from the tarball
+attached to the GitHub Release:
 
 ```bash
+dsh plugin --profile web add "github:zztdandan/dsh-deepseek-exa-hybrid-search#v1.1.3"
 dsh plugin --profile web add https://github.com/zztdandan/dsh-deepseek-exa-hybrid-search/releases/latest/download/dsh-deepseek-exa-hybrid-search.tgz
 ```
 
-`pnpm` records the tag in the profile's `package.json`; the existing bundle
-selection and this plugin's `config` stay as they are.
+`pnpm` records the dependency in the profile's `package.json`; the existing
+bundle selection and this plugin's `config` stay as they are.
 
 ### Update
 
-Re-run the install command with a newer tag. `pnpm` replaces the dependency in
-place (same package name, same bundle patch, same profile config):
-
 ```bash
-dsh plugin --profile web add "github:zztdandan/dsh-deepseek-exa-hybrid-search#v1.1.3"
+dsh plugin --profile web add dsh-deepseek-exa-hybrid-search@latest
 ```
 
-Then restart the engine: profile configuration reloads over HMR, but plugin
+`pnpm` replaces the package in place (same package name, same bundle patch, same
+profile config); git and tarball installs update the same way by naming the newer
+tag. Then restart the engine: profile configuration reloads over HMR, but plugin
 *code* is only re-imported at startup, so a running engine keeps the old code
-until it restarts. `dsh plugin why dsh-deepseek-exa-hybrid-search` shows the
-resolved commit, and `~/.dsh/profiles/web/node_modules/dsh-deepseek-exa-hybrid-search/package.json`
+until it restarts.
+
+`dsh plugin list dsh-deepseek-exa-hybrid-search` (or
+`~/.dsh/profiles/web/node_modules/dsh-deepseek-exa-hybrid-search/package.json`)
 shows the installed version.
 
 The plugin registers `hybrid2` (search) and
@@ -164,9 +163,10 @@ or `DEEPSEEK_API_KEY` / `EXA_API_KEY`, so CI runs only the offline suite.
 `.github/workflows/ci.yml` runs the offline suite, the package contract and
 `npm pack --dry-run` on every push and pull request (Node 20/22/24).
 `.github/workflows/publish.yml` runs on a `v*` tag: it re-runs the same checks,
-refuses a tag that does not match `package.json`, and creates the GitHub Release
-with both the versioned `.tgz` and a stable `<name>.tgz` attached. Nothing is
-published to a registry — the tag is the release.
+refuses a tag that does not match `package.json`, publishes to npm with
+provenance (skipping a version that already exists), and creates the GitHub
+Release with both the versioned `.tgz` and a stable `<name>.tgz` attached. The
+`NPM_TOKEN` repository secret authenticates the npm step.
 
 ```bash
 npm version patch --no-git-tag-version   # or edit package.json + CHANGELOG

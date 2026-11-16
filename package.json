@@ -48,7 +48,12 @@
   "scripts": {
     "test": "node --test test/unit.test.mjs",
     "test:live": "node test/run.mjs && node test/live-takeover.mjs",
-    "check": "node scripts/check-package.mjs"
+    "check": "node scripts/check-package.mjs",
+    "prepublishOnly": "npm run check && npm test"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "license": "MIT",
   "author": "zztdandan",
